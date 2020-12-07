@@ -1,14 +1,13 @@
+import Pkg;
+Pkg.add("DataStructures");
+using DataStructures;
+
 import threading
 import sys
 import importlib, traceback
 
 EQJL_ABORT = "EQJL_ABORT"
 
-try:
-    import queue as q
-except ImportError:
-    # queue is Queue in python 2
-    import Queue as q
 
 input_q = q.Queue()
 output_q = q.Queue()
@@ -66,7 +65,7 @@ def output_q_get():
         if aborted:
             result = p.exc
         else:
-            result = EQPY_ABORT
+            result = EQJL_ABORT
         aborted = True
 
     return result
