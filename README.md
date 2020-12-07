@@ -27,7 +27,7 @@
 96 ENABLE_JULIA=1
 97 JULIA_INSTALL={JULIA-HOME}
 ```
-remember to change ```{JULIA-HOME}```with your Julia home src.
+Remember to change ```{JULIA-HOME}```with your Julia home src.
 
 2. Run the build script ```dev/build/build-swift-t.sh```
 
