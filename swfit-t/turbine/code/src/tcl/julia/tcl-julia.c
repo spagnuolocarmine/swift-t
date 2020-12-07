@@ -9,6 +9,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <dlfcn.h>
 
 #include <tcl.h>
 #ifdef INLINE
@@ -32,8 +33,9 @@ static bool initialized = false;
 static void inline
 julia_initialize(void)
 {
-  jl_init(NULL);
-  JL_SET_STACK_BASE;
+  dlopen("libjulia.so", RTLD_NOW | RTLD_GLOBAL);
+  jl_init();
+  //JL_SET_STACK_BASE;
   initialized = true;
 }
 
