@@ -1,14 +1,14 @@
-#!/bin/bash`'bash_l()
-ifelse(getenv(PROJECT), `',,#COBALT -A getenv(PROJECT)
-)ifelse(getenv(QUEUE), `',,#COBALT -q getenv(QUEUE)
+#!/bin/bash -l
+ifelse(getenv_nospace(PROJECT), `',,#COBALT -A getenv_nospace(PROJECT)
+)ifelse(getenv_nospace(QUEUE), `',,#COBALT -q getenv(QUEUE)
 )#COBALT -n getenv(NODES)
 #COBALT -t getenv(WALLTIME)
 #COBALT --cwd getenv(WORK_DIRECTORY)
-#COBALT -o getenv(TURBINE_OUTPUT)/output.txt
-#COBALT -e getenv(TURBINE_OUTPUT)/output.txt
+#COBALT -o getenv_nospace(TURBINE_OUTPUT)/output.txt
+#COBALT -e getenv_nospace(TURBINE_OUTPUT)/output.txt
 #COBALT --jobname getenv(TURBINE_JOBNAME)
-ifelse(getenv(MAIL_ARG), `',,#COBALT 'getenv(MAIL_ARG)'
-)getenv(TURBINE_DIRECTIVE)
+ifelse(getenv_nospace(MAIL_ARG), `',,#COBALT 'getenv(MAIL_ARG)'
+)
 
 # These COBALT directives have to stay right at the top of the file!
 # No blank lines are allowed, making this look cluttered.
@@ -29,23 +29,18 @@ ifelse(getenv(MAIL_ARG), `',,#COBALT 'getenv(MAIL_ARG)'
 
 # TURBINE-THETA.SH
 
-# Created: esyscmd(`date "+%Y-%m-%d %H:%M:%S"')
+# Created: esyscmd(`date')
 
 source /opt/modules/default/init/bash
 module load modules
-module load alps
-module swap PrgEnv-intel PrgEnv-gnu 
 PATH=/opt/cray/elogin/eproxy/2.0.14-4.3/bin:$PATH # For aprun
+module swap PrgEnv-intel/6.0.4 PrgEnv-gnu
+module load alps
 
 set -eu
 
-echo TURBINE-THETA.SH
-
 # Get the time zone: for time stamps on log messages
 export TZ=getenv(TZ)
-
-START=$( date "+%s.%N" )
-echo "START: $( date '+%Y-%m-%d %H:%M:%S' )"
 
 COMMAND="getenv(COMMAND)"
 PPN=getenv(PPN)
@@ -54,8 +49,6 @@ PROCS=getenv(PROCS)
 TURBINE_HOME=getenv(TURBINE_HOME)
 TURBINE_STATIC_EXEC=getenv(TURBINE_STATIC_EXEC)
 EXEC_SCRIPT=getenv(EXEC_SCRIPT)
-
-export TURBINE_OUTPUT=getenv(TURBINE_OUTPUT)
 
 source ${TURBINE_HOME}/scripts/turbine-config.sh
 if [[ ${?} != 0 ]]
@@ -72,58 +65,43 @@ export ADLB_PRINT_TIME=getenv(ADLB_PRINT_TIME)
 
 echo "TURBINE SETTINGS"
 echo "JOB_ID:  ${COBALT_JOBID}"
-echo "DATE:    $( date '+%Y-%m-%d %H:%M:%S' )"
-echo "PROCS:   ${PROCS}"
-echo "PPN:     ${PPN}"
+echo "DATE:    $(date)"
 echo "TURBINE_HOME: ${TURBINE_HOME}"
+echo "PROCS:   ${PROCS}"
+echo "PPN:${PPN}"
+# echo "TCLLIBPATH:   ${TCLLIBPATH}"
+# echo "LAUNCHER:${LAUNCHER}"
+#[[ -n ${VALGRIND} ]] && \
+# echo "VALGRIND:${VALGRIND}"
 echo
 
-# Construct aprun-formatted user environment variable arguments
-# The dummy is needed for old GNU bash (4.3.48) under set -eu
-USER_ENV_ARRAY=( _dummy x getenv(USER_ENV_ARRAY) )
-USER_ENV_COUNT=${#USER_ENV_ARRAY[@]}
-USER_ENV_ARGS=()
-for (( i=0 ; i < USER_ENV_COUNT ; i+=2 ))
+# Put environment variables from run-init into 'aprun -e' format
+ENV_LIST="getenv(ENV_LIST)"
+APRUN_ENVS=""
+for KV in ${ENV_LIST}
 do
-  K=${USER_ENV_ARRAY[i]}
-  V=${USER_ENV_ARRAY[i+1]}
-  USER_ENV_ARGS+=( -e $K="${V}" )
+    APRUN_ENVS+="-e ${KV} "
 done
-set +x
 
 # This is the critical Cray fork() fix
-USER_ENV_ARGS+=( -e MPICH_GNI_FORK_MODE=FULLCOPY )
-USER_ENV_ARGS+=( -e TURBINE_OUTPUT=$TURBINE_OUTPUT )
+APRUN_ENVS+="-e MPICH_GNI_FORK_MODE=FULLCOPY"
 
 TURBINE_LAUNCH_OPTIONS="getenv(TURBINE_LAUNCH_OPTIONS)"
 
-# BEGIN TURBINE_PRELAUNCH
-getenv(TURBINE_PRELAUNCH)
-# END TURBINE_PRELAUNCH
-
-# Dump the environment to a sorted file for debugging:
-printenv -0 | sort -z | tr '\0' '\n' > turbine-env.txt
-
-# Run Turbine!
+# Run Turbine:
 set -x
 aprun -n ${PROCS} -N ${PPN} \
       ${TURBINE_LAUNCH_OPTIONS:-} \
-      "${USER_ENV_ARGS[@]}" \
+      ${APRUN_ENVS} \
       ${TURBINE_INTERPOSER:-} \
       ${COMMAND}
 CODE=${?}
 set +x
 
-STOP=$( date "+%s.%N" )
-# Bash cannot do floating point arithmetic:
-DURATION=$( awk -v START=${START} -v STOP=${STOP} \
-            'BEGIN { printf "%.3f\n", STOP-START }' < /dev/null )
-
 echo
 echo "Turbine Theta launcher done."
-echo "MPIEXEC TIME: ${DURATION}"
-echo "EXIT CODE: ${CODE}"
-echo "COMPLETE: $( date '+%Y-%m-%d %H:%M:%S' )"
+echo "CODE: ${CODE}"
+echo "COMPLETE: $(date)"
 
 # Return exit code from launcher (aprun)
 exit ${CODE}

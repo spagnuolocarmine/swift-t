@@ -8,11 +8,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// If this system does not have strchrnul(),
-// see ExM c-utils strchrnul.h
-#include <config.h>
-#include <strchrnul.h>
-
 #include "MPIX_Comm_launch.h"
 
 static char* old_pwd = NULL;
@@ -197,7 +192,7 @@ static int write_hosts(MPI_Info info, const char* allhosts, int size) {
 	return MPI_SUCCESS;
 }
 
-int turbine_MPIX_Comm_launch(const char* cmd, char** argv,
+int MPIX_Comm_launch(const char* cmd, char** argv,
 		MPI_Info info, int root, MPI_Comm comm,
 		int* exit_code) {
 

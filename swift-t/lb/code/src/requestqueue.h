@@ -26,7 +26,8 @@
  *  that they may run in the future, or for stolen work
  */
 
-#pragma once
+#ifndef REQUESTQUEUE_H
+#define REQUESTQUEUE_H
 
 typedef struct
 {
@@ -34,7 +35,7 @@ typedef struct
   int type;
   int count;
   void *_internal; /* Internal pointer, caller should not touch */
-} xlb_request_entry;
+} xlb_request_entry; 
 
 adlb_code
 xlb_requestqueue_init(int ntypes, const xlb_layout *layout);
@@ -97,3 +98,5 @@ int xlb_requestqueue_get(xlb_request_entry* r, int max);
 void xlb_requestqueue_remove(xlb_request_entry *e, int count);
 
 void xlb_requestqueue_shutdown(void);
+
+#endif

@@ -144,7 +144,7 @@ checkint()
 date_nice()
 # Human-readable date: minute resolution
 {
-  date "+%Y-%m-%d %H:%M"
+  date "+%m/%d/%Y %I:%M%p"
 }
 
 date_path()

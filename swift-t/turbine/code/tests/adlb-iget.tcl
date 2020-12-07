@@ -37,7 +37,7 @@ set put_count 4
 
 if { $amserver == 0 } {
 
-    set rank [ adlb::comm_rank ]
+    set rank [ adlb::rank ]
     if { $rank == 0 } {
         puts "clock: [ clock seconds ]"
         for { set i 0 } { $i < $put_count } { incr i } {

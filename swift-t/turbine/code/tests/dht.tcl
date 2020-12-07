@@ -28,8 +28,8 @@ if { ! [ adlb::amserver ] } {
         set count $env(COUNT)
     }
 
-    set size [ adlb::comm_size ]
-    set rank [ adlb::comm_rank ]
+    set size [ adlb::size ]
+    set rank [ adlb::rank ]
     if { $rank == 0 } {
         puts "COUNT: $count"
     }

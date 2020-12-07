@@ -21,7 +21,7 @@ set iterations 20
 
 if { ! [ adlb::amserver ] } {
 
-    set rank [ adlb::comm_rank ]
+    set rank [ adlb::rank ]
     puts "rank: $rank"
     set workers [ adlb::workers ]
     if { $rank == 0 } {

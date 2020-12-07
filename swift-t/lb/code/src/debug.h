@@ -27,7 +27,8 @@
  *  or at run time by setting environment variable XLB_DEBUG=0
  */
 
-#pragma once
+#ifndef DEBUG_H
+#define DEBUG_H
 
 #include <stdbool.h>
 #define _GNU_SOURCE
@@ -36,8 +37,7 @@
 #include <tools.h>
 
 #include "config.h"
-#include "adlb-time.h"
-#include "adlb-defs.h"
+#include "common.h"
 
 /** Is ADLB_DEBUG enabled? */
 extern bool xlb_debug_enabled;
@@ -72,17 +72,6 @@ adlb_code xlb_debug_check_environment(void);
    ADLB_DEBUG=0
  */
 #if ENABLE_LOG_DEBUG && !defined(NDEBUG)
-#define INFO_ENABLED 1
-#define INFO(format, args...)              \
-  {      printf("%5.4f ADLB: " format "\n", xlb_wtime(), ## args);  \
-         fflush(stdout);                    \
-       }
-#else
-#define INFO_ENABLED 0
-#define INFO(format, args...) // noop
-#endif
-
-#if ENABLE_LOG_DEBUG && !defined(NDEBUG)
 #define DEBUG_ENABLED 1
 #define DEBUG(format, args...)              \
   { if (xlb_debug_enabled) {                            \
@@ -90,8 +79,8 @@ adlb_code xlb_debug_check_environment(void);
          fflush(stdout);                    \
        } }
 #else
-#define DEBUG_ENABLED 0
 #define DEBUG(format, args...) // noop
+#define DEBUG_ENABLED 0
 #endif
 
 #if ENABLE_LOG_TRACE && !defined(NDEBUG)
@@ -128,7 +117,7 @@ adlb_code xlb_debug_check_environment(void);
 #endif
 
 /** Print that we are entering a function */
-#define TRACE_START TRACE("%s() ...",   __func__)
+#define TRACE_START TRACE("%s()...",    __func__)
 /** Print that we are exiting a function */
 #define TRACE_END   TRACE("%s() done.", __func__)
 
@@ -137,3 +126,5 @@ adlb_code xlb_debug_check_environment(void);
       printf("[%d] COUNTER: " format "\n", xlb_s.layout.rank, \
             ## args);                                     \
   } }
+
+#endif

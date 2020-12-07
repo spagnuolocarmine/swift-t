@@ -21,7 +21,8 @@
  *      Author: wozniak
  */
 
-#pragma once
+#ifndef LOG_H
+#define LOG_H
 
 #include <stdbool.h>
 
@@ -72,13 +73,10 @@ double log_time_absolute(void);
 void   log_printf(char* format, ...);
 
 /**
-   Force log output function.
-*/
-void   log_printf_force(char* format, ...);
-
-/**
    Flush whatever stream the log is using.
 */
 void   log_flush(void);
 
 void   log_finalize(void);
+
+#endif

@@ -1,0 +1,8 @@
+/usr/lib/x86_64-linux-gnu/libfakeroot
+/lib/i386-linux-gnu
+/usr/lib/i386-linux-gnu
+/usr/local/lib
+/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu
+/lib
+/usr/lib

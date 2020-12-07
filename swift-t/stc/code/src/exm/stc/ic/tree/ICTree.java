@@ -183,7 +183,7 @@ public class ICTree {
       }
       logger.debug("Done generating functions");
 
-      gen.finish();
+      gen.finalize();
     }
 
     public void addRequiredPackage(RequiredPackage pkg) {
@@ -244,7 +244,6 @@ public class ICTree {
           functionsByID.put(e.id(), e);
         }
 
-        @SuppressWarnings("unlikely-arg-type")
         @Override
         public void remove() {
           internal.remove();

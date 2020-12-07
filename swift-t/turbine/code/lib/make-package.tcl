@@ -54,7 +54,6 @@ set items [ eval list -load $libtclturbine \
                 -source langs.tcl      \
                 -source launch.tcl     \
                 -source python.tcl     \
-                -source json.tcl       \
                 -source gemtc_worker.tcl \
                 -source helpers.tcl ]
 

@@ -24,8 +24,8 @@
     by returning internal pointers to data structures and
     by using caller-provided fixed buffers.
  */
-
-#pragma once
+#ifndef __ADLB_TYPES_H
+#define __ADLB_TYPES_H
 
 #include "adlb-defs.h"
 #include "table_bp.h"
@@ -724,3 +724,5 @@ ADLB_Own_data(const adlb_buffer *caller_buffer, adlb_binary_data *data)
   }
   return ADLB_DATA_SUCCESS;
 }
+
+#endif // __ADLB_TYPES_H

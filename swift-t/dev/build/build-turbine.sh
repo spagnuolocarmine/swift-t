@@ -3,23 +3,18 @@ set -eu
 
 # BUILD TURBINE
 
-THIS=$(   readlink --canonicalize $( dirname  $0 ) )
+THIS=$(   dirname  $0 )
 SCRIPT=$( basename $0 )
 
-cd $THIS
-
-$THIS/check-settings.sh
-source $THIS/functions.sh
-source $THIS/options.sh
-source $THIS/swift-t-settings.sh
-source $THIS/setup.sh
+${THIS}/check-settings.sh
+source ${THIS}/functions.sh
+source ${THIS}/options.sh
+source ${THIS}/swift-t-settings.sh
 
 [[ $SKIP == *T* ]] && exit
 
 LOG $LOG_INFO "Building Turbine"
 cd ${TURBINE_SRC}
-
-check_lock $SWIFT_T_PREFIX/turbine
 
 run_bootstrap
 
@@ -29,33 +24,28 @@ if (( ENABLE_MPE )); then
     EXTRA_ARGS+=" --with-mpe"
 fi
 
-if (( ENABLE_PYTHON ))
-then
-  if [[ ${PYTHON_EXE:-} == "" ]]
-  then
-    EXTRA_ARGS+=" --enable-python"
-  else
+if (( ENABLE_PYTHON )); then
+  if (( ${#PYTHON_EXE} > 0 )); then
     EXTRA_ARGS+=" --with-python-exe=${PYTHON_EXE}"
+  else
+    EXTRA_ARGS+=" --enable-python"
   fi
 fi
 
-if (( ENABLE_R ))
-then
-  if [[ ${R_INSTALL:-} == "" ]]
-  then
-    EXTRA_ARGS+=" --enable-r"
-  else
-    EXTRA_ARGS+=" --with-r=${R_INSTALL}"
-  fi
+if (( ENABLE_R )); then
+  EXTRA_ARGS+=" --enable-r"
+fi
+if [[ ${R_INSTALL:-} != "" ]]; then
+  EXTRA_ARGS+=" --with-r=${R_INSTALL}"
+fi
 
-  if [[ ${RINSIDE_INSTALL:-} != "" ]]
-  then
-    EXTRA_ARGS+=" --with-rinside=${RINSIDE_INSTALL}"
-  fi
-  if [[ ${RCPP_INSTALL:-} != "" ]]
-  then
-    EXTRA_ARGS+=" --with-rcpp=${RCPP_INSTALL}"
-  fi
+if [[ ${RINSIDE_INSTALL:-} != "" ]]; then
+  EXTRA_ARGS+=" --with-rinside=${RINSIDE_INSTALL}"
+fi
+
+if [[ ${RCPP_INSTALL:-} != "" ]]
+then
+  EXTRA_ARGS+=" --with-rcpp=${RCPP_INSTALL}"
 fi
 
 if (( ENABLE_JULIA )); then
@@ -125,10 +115,6 @@ if (( SWIFT_T_CUSTOM_MPI )); then
   EXTRA_ARGS+=" --enable-custom-mpi"
 fi
 
-if [[ "${MPI_DIR:-}" != "" ]]; then
-  EXTRA_ARGS+=" --with-mpi=${MPI_DIR}"
-fi
-
 if [[ "${MPI_INCLUDE:-}" != "" ]]; then
   EXTRA_ARGS+=" --with-mpi-include=${MPI_INCLUDE}"
 fi
@@ -159,19 +145,6 @@ else
   EXTRA_ARGS+=" --with-hdf5=$WITH_HDF5"
 fi
 
-if [[ ${LAUNCHER:-} != "" ]]; then
-  EXTRA_ARGS+=" --with-launcher=${LAUNCHER}"
-fi
-
-if (( ENABLE_R ))
-then
-  # May need this to find Rscript, which is used for installation:
-  if [[ ${R_INSTALL:-} != "" ]]
-  then
-    PATH=$R_INSTALL/bin:$PATH
-  fi
-fi
-
 common_args
 
 if (( RUN_CONFIGURE )) || [[ ! -f Makefile ]]
@@ -183,21 +156,20 @@ then
   rm -f config.cache
   (
     set -ex
-    ${NICE_CMD} ./configure \
-                ${CONFIGURE_ARGS[@]} \
+    ./configure --config-cache \
                 --prefix=${TURBINE_INSTALL} \
                 --with-c-utils=${C_UTILS_INSTALL} \
                 --with-adlb=${LB_INSTALL} \
-                ${EXTRA_ARGS} \
-                ${CUSTOM_CFG_ARGS_TURBINE:-}
+                ${EXTRA_ARGS} 
+                #--disable-log
     )
-  assert ${?} "Configure failed!"
+  assert $? "Configure failed!"
 fi
 
 report_turbine_includes()
 {
   echo
-  echo "Make failed.  The following may be useful:"
+  echo Make failed.  The following may be useful:
   echo
   set -x
   rm -fv deps_contents.txt

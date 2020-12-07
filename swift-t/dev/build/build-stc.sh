@@ -3,23 +3,18 @@ set -eu
 
 # BUILD STC
 
-THIS=$(   readlink --canonicalize $( dirname  $0 ) )
+THIS=$(   dirname  $0 )
 SCRIPT=$( basename $0 )
 
-cd $THIS
-
-$THIS/check-settings.sh
-source $THIS/functions.sh
-source $THIS/options.sh
-source $THIS/swift-t-settings.sh
-source $THIS/setup.sh
+${THIS}/check-settings.sh
+source ${THIS}/functions.sh
+source ${THIS}/options.sh
+source ${THIS}/swift-t-settings.sh
 
 [[ $SKIP == *S* ]] && exit
 
 echo "Building STC in $PWD"
-cd $STC_SRC
-
-check_lock $SWIFT_T_PREFIX/stc
+cd ${STC_SRC}
 
 echo "Ant and Java settings:"
 which $ANT java
@@ -28,30 +23,23 @@ echo "JAVA_HOME: '${JAVA_HOME:-}'"
 echo "ANT_HOME:  '${ANT_HOME:-}'"
 echo
 
-USE_JAVA=$( which java )
-
-if (( RUN_MAKE_CLEAN ))
-then
-  $ANT clean
+if (( RUN_MAKE_CLEAN )); then
+  ${ANT} clean
 fi
 
-if (( ! RUN_MAKE ))
-then
+if (( ! RUN_MAKE )); then
   exit
 fi
 
-# The main Ant build step
-$NICE_CMD $ANT $STC_ANT_ARGS
+${ANT} ${STC_ANT_ARGS}
 
-if (( ! RUN_MAKE_INSTALL ))
-then
+if (( ! RUN_MAKE_INSTALL )); then
   exit
 fi
 
-if (( ${#STC_INSTALL} > 0 ))
+if [ ! -z "${STC_INSTALL}" ]
 then
-  $NICE_CMD $ANT -Ddist.dir="$STC_INSTALL" \
-                 -Dturbine.home="$TURBINE_INSTALL" \
-                 -Duse.java="$USE_JAVA" \
-                 install
+  ${ANT} -Ddist.dir="${STC_INSTALL}" \
+         -Dturbine.home="${TURBINE_INSTALL}" \
+         install
 fi

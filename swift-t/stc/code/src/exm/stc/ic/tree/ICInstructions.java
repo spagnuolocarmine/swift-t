@@ -1865,7 +1865,6 @@ public class ICInstructions {
       }
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     @Override
     public void removeVars(Set<Var> removeVars) {
       assert(!removeVars.contains(newLoopVars.get(0)));

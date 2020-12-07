@@ -28,7 +28,6 @@
 #include <unistd.h>
 
 #include <tools.h>
-#include "src/turbine/turbine.h"
 #include "src/tcl/blob/blob.h"
 
 #include "config.h"
@@ -488,9 +487,3 @@ blobutils_hdf_write(const char* output, const char* dataset,
   return false;
 }
 #endif // HAVE_HDF
-
-MPI_Comm
-turbine_get_task_comm(void)
-{
-  return turbine_task_comm;
-}

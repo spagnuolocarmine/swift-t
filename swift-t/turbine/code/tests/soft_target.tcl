@@ -18,16 +18,16 @@ package require turbine 1.0
 namespace import turbine::*
 
 proc task_fixed { msg tag rank sleep_ms } {
-    if { $rank != [ adlb::comm_rank ] } {
+    if { $rank != [ adlb::rank ] } {
       error "Rank on wrong rank: $msg expected rank: $rank\
-             actual rank [ adlb::comm_rank ]"
+             actual rank [ adlb::rank ]"
     }
-    puts "[ adlb::comm_rank ]: TASK: FIXED OK: $tag"
+    puts "[ adlb::rank ]: TASK: FIXED OK: $tag"
     after $sleep_ms
 }
 
 proc task_flexible { sleep_ms tag } {
-    puts "[ adlb::comm_rank ]: TASK: FLEXIBLE $tag"
+    puts "[ adlb::rank ]: TASK: FLEXIBLE $tag"
     after $sleep_ms
 }
 

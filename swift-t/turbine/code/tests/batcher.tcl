@@ -42,7 +42,7 @@ proc do_work {} {
 proc do_client {argc argv} {
 
     global WORK_TYPE
-    set rank [ adlb::comm_rank ]
+    set rank [ adlb::rank ]
 
     if { $rank == 0 } {
         if { $argc != 1 } {

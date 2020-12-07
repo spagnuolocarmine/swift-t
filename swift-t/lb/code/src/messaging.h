@@ -723,7 +723,7 @@ mpi_send_big(const void* data, size_t length, int target, int tag)
   size_t chunks_full = length / chunk;
   size_t remainder   = length % chunk;
   int    remainder_int = (int) remainder;
-  char* p = (char*) data;
+  const void* p = data;
   for (int i = 0; i < chunks_full; i++)
   {
     SEND(p, chunk_int, MPI_BYTE, target, tag);
@@ -741,7 +741,7 @@ mpi_recv_big(void* xfer, size_t length, int caller, int tag)
   size_t chunks_full = length / chunk;
   size_t remainder   = length % chunk;
   int    remainder_int = (int) remainder;
-  char* p = xfer;
+  void* p = xfer;
   MPI_Status status;
   for (int i = 0; i < chunks_full; i++)
   {

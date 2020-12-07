@@ -32,8 +32,6 @@
 #include "src/turbine/turbine-checks.h"
 #include "src/turbine/services.h"
 
-#include <log.h>
-
 static void task_error(Tcl_Interp* interp, int tcl_rc, char* command);
 
 /** Limit for biggest task ADLB_Get() can give us */
@@ -79,17 +77,8 @@ turbine_worker_loop(Tcl_Interp* interp,
     // Set task communicator for parallel tasks
     turbine_task_comm = task_comm;
 
-    bool print_command = false;
-    if (task_comm != MPI_COMM_SELF)
-    {
-      int r;
-      MPI_Comm_rank(task_comm, &r);
-      if (r == 0)
-        print_command = false;
-    }
     char* command = payload;
-    if (print_command)
-      log_printf_force("eval: %s", command);
+    DEBUG_TURBINE("eval: %s", command);
 
     rc = Tcl_EvalEx(interp, command, task_size-1, 0);
     if (rc != TCL_OK)

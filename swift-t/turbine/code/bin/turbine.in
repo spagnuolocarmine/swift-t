@@ -131,29 +131,29 @@ fi
 source ${TURBINE_HOME}/scripts/turbine-config.sh
 if (( ${?} != 0 ))
 then
-  print "Turbine installation is broken!"
+  echo "Turbine installation is broken!"
   exit 1
 fi
 
 report_version()
 {
   print "Turbine ${TURBINE_VERSION}"
-  print " installed:    ${TURBINE_HOME}"
+  print " in: ${TURBINE_HOME}"
   SOURCE_TXT=${TURBINE_HOME}/etc/source.txt
   if [[ -f ${SOURCE_TXT} ]]
   then
-    print " source:       $( cat ${SOURCE_TXT} )"
+    print " installed from: $( cat ${SOURCE_TXT} )"
   fi
-  print " using CC:     ${USE_CC}"
-  print " using MPI:    ${MPI_LABEL}"
-  print " using Tcl:    ${TCLSH}"
+  print " using CC:  ${USE_CC}"
+  print " using MPI: ${MPI_LABEL}"
+  print " using Tcl: ${TCLSH}"
   if (( ${#TURBINE_USE_PYTHON} + ${#TURBINE_USE_PYTHON_NAME} ))
   then
     print " using Python: ${TURBINE_USE_PYTHON} ${TURBINE_USE_PYTHON_NAME}"
   fi
   if [[ ${TURBINE_USE_R} != 0 ]]
   then
-    print " using R:      ${TURBINE_USE_R}"
+    print " using R: ${TURBINE_USE_R}"
   fi
 }
 
@@ -179,9 +179,9 @@ print_help()
 
 if (( PRINT_HELP ))
 then
-  print
+  echo
   report_version
-  print
+  echo
   print_help
   exit 0
 fi
@@ -210,14 +210,14 @@ ARGS=( ${*} )
 
 if [[ ! -f ${PROGRAM} ]]
 then
-  print "turbine: Program not found: ${PROGRAM}"
+  echo "turbine: Program not found: ${PROGRAM}"
   exit 1
 fi
 if [[ ${#PROGRAM%.swift} != ${#PROGRAM} ]]
 then
-  print "turbine: Given a Swift script: ${PROGRAM}"
-  print "\t Turbine inputs are normally *.tic or *.tcl"
-  print "\t Use stc to generate a *.tic from a *.swift"
+  echo "turbine: Given a Swift script: ${PROGRAM}"
+  echo "\t Turbine inputs are normally *.tic or *.tcl"
+  echo "\t Use stc to generate a *.tic from a *.swift"
   exit 1
 fi
 
@@ -235,11 +235,16 @@ fi
 LAUNCH_OPTIONS=()
 LAUNCH_OPTIONS+=${LINE_PREFIX}
 LAUNCH_OPTIONS+=( -n ${PROCS} )
-LAUNCH_OPTIONS+=( ${=TURBINE_LAUNCH_OPTIONS} )
+LAUNCH_OPTIONS+=( ${TURBINE_LAUNCH_OPTIONS} )
 
 if (( VERBOSE ))
 then
   which ${TURBINE_LAUNCHER}
+fi
+
+if (( ${#TURBINE_USE_PYTHON} ))
+then
+  export PYTHONPATH=${TURBINE_HOME}/py${PYTHONPATH:+:}${PYTHONPATH:-}
 fi
 
 check_machine()
@@ -251,11 +256,11 @@ check_machine()
     [[ ${MACHINE_MODE} == ${M} ]] && return
   done
   # We didn't find a match
-  print "No such machine: ${MACHINE_MODE}"
+  echo "No such machine: ${MACHINE_MODE}"
   exit 1
 }
 
-if (( ${#MACHINE_MODE} != 0 ))
+if [[ -n ${MACHINE_MODE} ]]
 then
   # Use a scheduler script...
   check_machine
@@ -265,11 +270,6 @@ then
   (( VERBOSE )) && MACHINE_ARGS+=( -V )
   (( TURBINE_STATIC_EXEC )) && MACHINE_ARGS+=( -X )
   (( EXEC_SCRIPT )) && MACHINE_ARGS+=( -x )
-  # Set up PYTHONPATH for turbine_helpers
-  if (( ${#TURBINE_USE_PYTHON} ))
-  then
-      export PYTHONPATH=${TURBINE_HOME}/py${PYTHONPATH:+:}${PYTHONPATH:-}
-  fi
   # Construct the scheduler script name
   RUN_SCRIPT_NAME=${MACHINE_MODE}/turbine-${MACHINE_MODE}-run.zsh
   RUN_SCRIPT=${TURBINE_HOME}/scripts/submit/${RUN_SCRIPT_NAME}
@@ -290,12 +290,6 @@ for KV in ${ENV_VARS}
 do
   export ${KV}
 done
-
-# Set up PYTHONPATH for turbine_helpers
-if (( ${#TURBINE_USE_PYTHON} ))
-then
-    export PYTHONPATH=${TURBINE_HOME}/py${PYTHONPATH:+:}${PYTHONPATH:-}
-fi
 
 # TURBINE_INTERPOSER allows user to insert valgrind, strace, etc.
 ${TURBINE_LAUNCHER} ${LAUNCH_OPTIONS} ${=TURBINE_INTERPOSER} \

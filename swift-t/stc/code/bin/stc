@@ -296,7 +296,7 @@ lookup_java()
     # Broken Java: User gave bad stc -j argument
     print "Cannot run java!"
     print "Tried: ${JVM}"
-    return 1
+    exit 1
   fi
 }
 
@@ -306,12 +306,8 @@ report_version()
   cat ${STC_HOME}/etc/version.txt
   printf "\t for Turbine: "
   cat ${STC_HOME}/etc/turbine-version.txt
-  if lookup_java
-  then
-    print "Using Java VM:    ${JVM}"
-  else
-    print "Could not find Java!"
-  fi
+  lookup_java
+  print "Using Java VM:    ${JVM}"
   print "Using Turbine in: ${TURBINE_HOME}"
   exit 0
 }

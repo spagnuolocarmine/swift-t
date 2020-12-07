@@ -11,8 +11,8 @@ set -eu
 # Copied from /dev/helpers.sh: Cannot source that file (#111)
 crash()
 {
-  echo    >&2
-  echo $1 >&2
+  echo    > /dev/stderr
+  echo $1 > /dev/stderr
   exit 1
 }
 

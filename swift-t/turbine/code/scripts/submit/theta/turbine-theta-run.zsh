@@ -18,10 +18,8 @@ set -eu
 # See run-init.zsh for usage
 
 # Convention note: This script uses -n <processes>
-#                  APRUN       uses -n <processes>
-#                  MPIEXEC     uses -n <processes>
 #                  Cobalt qsub uses -n <nodes>
-# (We follow the MPIEXEC convention.)
+# (We follow the mpiexec convention.)
 
 print "TURBINE-THETA SCRIPT"
 
@@ -71,6 +69,7 @@ export ENV_LIST
 
 # Launch it
 export COMMAND
+COMMON_M4=${TURBINE_HOME}/scripts/submit/common.m4
 TURBINE_THETA_M4=${TURBINE_HOME}/scripts/submit/theta/turbine-theta.sh.m4
 TURBINE_THETA=${TURBINE_OUTPUT}/turbine-theta.sh
 m4 ${COMMON_M4} ${TURBINE_THETA_M4} > ${TURBINE_THETA}

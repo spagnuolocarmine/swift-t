@@ -631,7 +631,10 @@ namespace eval turbine {
     proc file_write_body { dst str } {
         set str_val [ retrieve_decr_string $str ]
 	set d [ get_filename_val $dst ]
-        file_write_local d $str_val
+        ensure_directory_exists2 $d
+	set fp [ ::open $d w+ ]
+        puts -nonewline $fp $str_val
+	close $fp
 	close_file $dst
     }
 
@@ -693,7 +696,7 @@ namespace eval turbine {
     }
 
     proc file_lines { result input comment } {
-        set src [ lindex $input 0 ]
+        	set src [ lindex $input 0 ]
         rule_file_helper "file_lines-$result-$src" [ list ] \
             [ list $comment ] [ list $src ] \
             $::turbine::WORK \

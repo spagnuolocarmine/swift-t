@@ -3,23 +3,18 @@ set -eu
 
 # BUILD LB
 
-THIS=$(   readlink --canonicalize $( dirname  $0 ) )
+THIS=$(   dirname  $0 )
 SCRIPT=$( basename $0 )
 
-cd $THIS
-
-$THIS/check-settings.sh
-source $THIS/functions.sh
-source $THIS/options.sh
-source $THIS/swift-t-settings.sh
-source $THIS/setup.sh
+${THIS}/check-settings.sh
+source ${THIS}/functions.sh
+source ${THIS}/options.sh
+source ${THIS}/swift-t-settings.sh
 
 [[ $SKIP == *T* ]] && exit
 
 LOG $LOG_INFO "Building lb"
 cd ${LB_SRC}
-
-check_lock $SWIFT_T_PREFIX/c-utils
 
 run_bootstrap
 
@@ -65,13 +60,11 @@ then
   (
     rm -f config.cache
     set -eux
-    ${NICE_CMD} ./configure \
-                ${CONFIGURE_ARGS[@]} \
+    ./configure --config-cache \
                 --with-c-utils=${C_UTILS_INSTALL} \
                 --prefix=${LB_INSTALL} \
                 CC=${CC} \
-                ${EXTRA_ARGS} \
-                ${CUSTOM_CFG_ARGS_LB:-}
+                ${EXTRA_ARGS}
   )
   if (( $? ))
   then

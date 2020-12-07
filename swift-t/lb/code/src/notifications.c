@@ -506,13 +506,13 @@ static adlb_code
 xlb_refc_changes_apply(adlb_notif_t *notifs, bool apply_all,
                                bool apply_local, bool apply_preacquire)
 {
-  DEBUG("xlb_refc_changes_apply(): applying local refcounts");
+  DEBUG("APPLYING LOCAL REFCOUNTS");
   adlb_data_code dc;
   xlb_refc_changes *c = &notifs->refcs;
   bool any_applied = false;
   for (int i = 0; i < c->count; i++)
   {
-    DEBUG("xlb_refc_changes_apply(): applying local refcount %i", i);
+    DEBUG("APPLYING LOCAL REFCOUNT %i", i);
     bool applied = false;
     xlb_refc_change *change = &c->arr[i];
     if (ADLB_REFC_IS_NULL(change->rc))

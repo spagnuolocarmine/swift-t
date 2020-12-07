@@ -1,4 +1,0 @@
-
-= Examples
-
-This contains some swift-t-settings files for known systems.

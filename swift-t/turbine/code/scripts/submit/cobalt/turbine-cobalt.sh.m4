@@ -1,4 +1,4 @@
-changecom(`dnl')#!/bin/bash`'bash_l()
+changecom(`dnl')#!/bin/bash
 # We use changecom to change the M4 comment to dnl, not hash
 
 # Copyright 2013 University of Chicago and Argonne National Laboratory
@@ -18,6 +18,9 @@ changecom(`dnl')#!/bin/bash`'bash_l()
 # TURBINE-COBALT.SH
 
 # Created: esyscmd(`date')
+
+# Define a convenience macro
+define(`getenv', `esyscmd(printf -- "$`$1' ")')
 
 # Get the time zone: for time stamps on log messages
 export TZ=getenv(TZ)
@@ -62,8 +65,8 @@ echo "LAUNCHER:     ${LAUNCHER}"
 echo "VALGRIND:     ${VALGRIND}"
 echo
 
-# Export all user environment variables
-export getenv(USER_ENV_ARRAY)
+# Unpack and export all user environment variables
+export getenv(ENV_LIST)
 
 # Run Turbine:
 ${LAUNCHER} -l ${NODE_ARG} -n ${PROCS} -ppn ${PPN} \
