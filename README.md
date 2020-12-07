@@ -17,7 +17,8 @@
 97 JULIA_INSTALL={JULIA-HOME}
 ```
 remember to change ```{JULIA-HOME}```with your Julia home src.
-2. build your source ```dev/build/build-swift-t.sh```
+
+2. Build your source ```dev/build/build-swift-t.sh```
 
 
 ### Contributors
