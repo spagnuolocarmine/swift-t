@@ -18,3 +18,9 @@
 ```
 remember to change ```{JULIA-HOME}```with your Julia home src.
 2. build your source ```dev/build/build-swift-t.sh```
+
+
+### Contributors
+
+- Carmine Spagnuolo, PhD
+- Giuseppe D'Ambrosio, PhD Student
