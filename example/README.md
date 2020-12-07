@@ -1,4 +1,4 @@
 # Working 
 
-- compile ```stc exampleJulia.swift````
-- run ```turbine -n 2 exampleJulia.tic```
+- Compile your source ```swift-t-install/stc/bin/stc exampleJulia.swift```
+- Run ```swift-t-install/turbine/bin/turbine -n 2 exampleJulia.tic```
