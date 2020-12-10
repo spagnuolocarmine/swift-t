@@ -49,7 +49,7 @@ julia_eval(const char* code, Tcl_Obj** result)
   sprintf(assignment, "_t = %s", code);
   // sprintf(assignment, "_t = sqrt(2.0)");
   jl_eval_string(assignment);
-
+ 
   jl_value_t* value = jl_eval_string("\"$_t\n\"");
   char* s = jl_string_data(value);
   chomp(s);

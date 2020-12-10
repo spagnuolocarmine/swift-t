@@ -4,5 +4,9 @@
 /usr/local/lib
 /lib/x86_64-linux-gnu
 /usr/lib/x86_64-linux-gnu
+/lib32
+/usr/lib32
+/libx32
+/usr/libx32
 /lib
 /usr/lib

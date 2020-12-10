@@ -16,4 +16,4 @@ TARGET=$1
 EQJL=$( cd $( dirname $0 ) ; /bin/pwd )
 
 mkdir -pv ${TARGET}
-cp -uv ${EQPY}/{eqjl.py,EQJL.swift} ${TARGET}
+cp -uv ${EQJL}/{eqjl.jl,EQJL.swift} ${TARGET}

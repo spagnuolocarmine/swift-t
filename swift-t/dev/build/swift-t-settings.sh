@@ -82,12 +82,12 @@ SWIFT_T_TRACE_BUILD=0
 ENABLE_PYTHON=1
 # Specify the Python interpreter executable below;
 # if empty, looks for python in PATH
-PYTHON_EXE=/usr/bin/python2.7
+PYTHON_EXE=/usr/bin/python
 # PYTHON_EXE=$HOME/sfw/Python-2.7.10/bin/python
 
 # Enable R integration
 ENABLE_R=0
-#R_INSTALL=/usr/bin/R
+#R_INSTALL=/opt/R/4.0.3/lib/R
 # Define these if Rcpp and RInside are not autodetected
 # RCPP_INSTALL=/path/to/Rcpp
 # RINSIDE_INSTALL=/path/to/RInside
