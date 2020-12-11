@@ -1,4 +1,4 @@
-include("../ext/EQJL/eqjl.jl")
+include("../ext/EQ-JL/eqjl.jl")
 using .eqjl
 function algo() 
     eqjl.OUT_put("1;2;3;4;5;6")
