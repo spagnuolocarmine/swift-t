@@ -1,6 +1,7 @@
 
 /*
-   EMEWS EQJL.swift
+    EMEWS EQJL integration to support Julia code.
+    Authors: Carmine Spagnuolo and Giuseppe D'Ambrosio
 */
 
 import location;
