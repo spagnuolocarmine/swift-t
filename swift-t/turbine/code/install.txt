@@ -1,5 +1,0 @@
-PREFIX: /home/giuseppe/swift-t-install/turbine
-ENABLE_DEB: 0
-SOURCE: /home/giuseppe/Git/swift-t/swift-t/turbine/code
-DATE:   12/10/2020 04:47PM
-COMMIT: 2864ce9a3 Mon, 7 Dec 2020 12:56:20 +0100 clean commit

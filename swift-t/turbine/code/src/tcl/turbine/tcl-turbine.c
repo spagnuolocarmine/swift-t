@@ -526,7 +526,6 @@ rule_opt_from_kv(Tcl_Interp* interp, Tcl_Obj *const objv[],
         rc = Tcl_GetIntFromObj(interp, val, &t);
         TCL_CHECK_MSG(rc, "target argument must be integer");
         opts->target = t;
-
         return TCL_OK;
       }
       else if (strcmp(k, "type") == 0)
@@ -842,11 +841,14 @@ worker_keyword_args(Tcl_Interp *interp, Tcl_Obj *const objv[],
 }
 
 int
-Turbine_TaskComm_Cmd(ClientData cdata, Tcl_Interp *interp,
+Turbine_TaskCommInt_Cmd(ClientData cdata, Tcl_Interp *interp,
                      int objc, Tcl_Obj *const objv[])
 {
   TCL_ARGS(1);
-  Tcl_Obj* result = Tcl_NewWideIntObj((long long int) turbine_task_comm);
+  Tcl_Obj* result =
+    Tcl_NewWideIntObj((long long int) turbine_task_comm);
+  //printf("TaskCommInt_Cmd(): turbine_task_comm: %lli\n",
+  //       (long long int) turbine_task_comm);
   Tcl_SetObjResult(interp, result);
   return TCL_OK;
 }
@@ -1739,6 +1741,7 @@ Turbine_Bcast_Cmd(ClientData cdata, Tcl_Interp *interp,
                   int objc, Tcl_Obj *const objv[])
 {
   // Unpack
+  // ARGS: comm root variable_name
   TCL_ARGS(4);
   int rc;
   Tcl_WideInt comm_int;
@@ -1759,7 +1762,8 @@ Turbine_Bcast_Cmd(ClientData cdata, Tcl_Interp *interp,
 
   // Execute
   int length;
-  turbine_io_bcast(comm, &s, &length);
+  bool b = turbine_io_bcast(comm, &s, &length);
+  TCL_CONDITION(b, "Broadcast failed!")
 
   // Return
   if (rank != root)
@@ -1802,7 +1806,7 @@ Tclturbine_Init(Tcl_Interp* interp)
   COMMAND("cache_check", Turbine_Cache_Check_Cmd);
   COMMAND("cache_retrieve", Turbine_Cache_Retrieve_Cmd);
   COMMAND("cache_store", Turbine_Cache_Store_Cmd);
-  COMMAND("task_comm",   Turbine_TaskComm_Cmd);
+  COMMAND("task_comm_int", Turbine_TaskCommInt_Cmd);
   COMMAND("finalize",    Turbine_Finalize_Cmd);
   COMMAND("debug_on",    Turbine_Debug_On_Cmd);
   COMMAND("debug",       Turbine_Debug_Cmd);

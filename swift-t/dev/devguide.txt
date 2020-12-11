@@ -1,0 +1,15 @@
+
+OBSOLETE: See dev.txt in the gh-pages branch!
+
+////
+Swift/T devguide, asciidoc format
+////
+
+= Swift/T Developers' Guide
+
+////
+Local Variables:
+mode: doc
+eval: (auto-fill-mode 1)
+End:
+////

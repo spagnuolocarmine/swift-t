@@ -1,0 +1,6 @@
+lib/
+debian
+install.txt
+source.txt
+c-utils-config.h
+c-utils-config.h.in
