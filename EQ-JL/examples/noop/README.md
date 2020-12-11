@@ -11,7 +11,7 @@ In this case, the ```julia/algorithm.jl``` simply sends a list of data (separate
 For using the EQJL queue you must define your Julia code using the following structure:
 
 ```julia
-include("../ext/EQJL/eqjl.jl")
+include("../ext/EQ-JL/eqjl.jl")
 using .eqjl
 function algo() 
     # <<Here your code>>
