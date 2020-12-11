@@ -1,10 +1,11 @@
 """
-    EMEWS simple noop example using Julia code.
+EMEWS simple noop example using Julia code.
 Please refer to the Python example, for more details:
 https://github.com/emews/EQ-Py/tree/master/examples/noop
 Authors: Carmine Spagnuolo and Giuseppe D'Ambrosio
 
 """
+
 include("../ext/EQ-JL/eqjl.jl")
 using .eqjl
 function algo() 

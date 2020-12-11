@@ -21,7 +21,7 @@ set -eu
 # $ mpiexec -n <PROCS> turbine-pilot <WORKFLOW.TIC>
 # PROCS must be >= 2
 
-TURBINE_HOME='/home/giuseppe/EMEWS/swift-t-install/turbine'
+TURBINE_HOME='/home/giuseppe/swift-t-install/turbine'
 
 ARGS=( ${*} )
 

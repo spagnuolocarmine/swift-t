@@ -12,10 +12,10 @@ if (( DEBIAN_BUILD ))
 then
   TURBINE_HOME=/usr/lib/turbine
 else
-  TURBINE_HOME='/home/giuseppe/EMEWS/swift-t-install/turbine'
+  TURBINE_HOME='/home/giuseppe/swift-t-install/turbine'
 fi
 TURBINE_VERSION='1.2.3'
-C_UTILS_HOME='/home/giuseppe/EMEWS/swift-t-install/c-utils'
+C_UTILS_HOME='/home/giuseppe/swift-t-install/c-utils'
 TCL_HOME='/usr'
 TCL_VERSION='8.6'
 TCL_LIB_DIR='/usr/lib/x86_64-linux-gnu'
@@ -25,7 +25,7 @@ TCL_LIB_SPEC='-L/usr/lib/x86_64-linux-gnu -ltcl8.6'
 TCL_LIB_SPEC_EXTRA='-ldl -lz  -lpthread -lm'
 TCL_INCLUDE_SPEC='-I/usr/include/tcl8.6'
 TCLSH='/usr/bin/tclsh8.6'
-ADLB_HOME='/home/giuseppe/EMEWS/swift-t-install/lb'
+ADLB_HOME='/home/giuseppe/swift-t-install/lb'
 
 MPI_INCLUDE='/usr/local/include'
 # Only one of the following is used

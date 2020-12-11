@@ -13,13 +13,13 @@ if (( DEBIAN_BUILD ))
 then
   export TURBINE_HOME=/usr/lib/turbine
 else
-  export TURBINE_HOME='/home/giuseppe/EMEWS/swift-t-install/turbine'
+  export TURBINE_HOME='/home/giuseppe/swift-t-install/turbine'
 fi
 TURBINE_VERSION=1.2.3
-export C_UTILS=/home/giuseppe/EMEWS/swift-t-install/c-utils
+export C_UTILS=/home/giuseppe/swift-t-install/c-utils
 export TCL=/usr
 export TCLSH=/usr/bin/tclsh8.6
-export ADLB=/home/giuseppe/EMEWS/swift-t-install/lb
+export ADLB=/home/giuseppe/swift-t-install/lb
 
 export USE_CC=/usr/local/bin/mpicc
 export MPI_IMPL=OpenMPI
