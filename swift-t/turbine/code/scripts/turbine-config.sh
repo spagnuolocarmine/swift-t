@@ -74,8 +74,8 @@ export TCLLIBPATH
 
 export TURBINE_MACHINE=normal
 
-export TURBINE_USE_PYTHON=
-export TURBINE_USE_PYTHON_NAME=
+export TURBINE_USE_PYTHON=/usr/lib
+export TURBINE_USE_PYTHON_NAME=python2.7
 export TURBINE_USE_R=0
 
 if [[ ${TURBINE_USE_R} != 0 ]]
