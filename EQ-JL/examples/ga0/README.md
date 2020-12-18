@@ -2,10 +2,10 @@
 
 ## Quick start instructions
 
-----
+```
 ./setup.sh
 swift/run
-----
+```
 
 ## Overview
 
